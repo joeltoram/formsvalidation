@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Formulario de solitud de empleo</title>
+
+        <script>
+
+            const formulario = document.getElementById("formulario");
+            const userName = document.getElementById("userName");
+            const userEmail = document.getElementById("userEmail");
+
+            const alertSuccess = document.getElementById("alertSuccess");
+            const alertName = document.getElementById("alertName");
+            const alertEmail = document.getElementById("alertEmail");
+
+            const regUserName = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/;
+            const regUserEmail = /^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$/;
+
+            const pintarMensajeExito = () => {
+                alertSuccess.classList.remove("d-none");
+                alertSuccess.textContent = "Mensaje enviado con éxito";
+            };
+
+            const pintarMensajeError = (errores) => {
+                errores.forEach((item) => {
+                item.tipo.classList.remove("d-none");
+                item.tipo.textContent = item.msg;
+            });
+            };
+
+            formulario.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            alertSuccess.classList.add("d-none");
+            const errores = [];
+
+            // validar nombre
+            if (!regUserName.test(userName.value) || !userName.value.trim()) {
+            userName.classList.add("is-invalid");
+
+            errores.push({
+                tipo: alertName,
+                msg: "Formato no válido campo nombre, solo letras",
+            });
+            } else {
+                userName.classList.remove("is-invalid");
+                userName.classList.add("is-valid");
+                alertName.classList.add("d-none");
+            }
+
+            // validar email
+            if (!regUserEmail.test(userEmail.value) || !userEmail.value.trim()) {
+            userEmail.classList.add("is-invalid");
+
+            errores.push({
+                tipo: alertEmail,
+                msg: "Escriba un correo válido",
+            });
+            } else {
+                userEmail.classList.remove("is-invalid");
+                userEmail.classList.add("is-valid");
+                alertEmail.classList.add("d-none");
+            }
+
+            if (errores.length !== 0) {
+                pintarMensajeError(errores);
+                return;
+            }
+
+            console.log("Formulario enviado con éxito");
+            pintarMensajeExito();
+            });
+
+            formulario.addEventListener("submit", (e) => {
+            e.preventDefault();
+            console.log("funciona");
+
+            const inputs = new FormData(formulario);
+            console.log(inputs.get("userName"));
+            console.log(inputs.get("userEmail"));
+
+            for (let campo of inputs.values()) {
+                console.log(campo);
+            }
+
+            for (let campo of inputs.entries()) {
+                console.log(campo);
+            }
+            });
+
+        </script>
+
+       
+        
+        <link
+            crossorigin="anonymous"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+            rel="stylesheet"
+        />
+
+    </head>
+    
+
+    <body>
+        <div class="container">
+            <h1>Fomulario para solicitud de empleo</h1>
+            
+            <form id="formulario">
+
+                <input
+                    class="form-control mb-2"
+                    name="nombre"
+                    placeholder="Ingrese su nombre correcto"
+                    id="nombre"
+                    autocomplete="off"
+                    type="nombre"
+                    
+                />
+
+                <p class="text-danger mb-2 d-none" id="alertnombre"></p>
+
+
+                <input
+                    class="form-control mb-2"
+                    name="telefono"
+                    placeholder="Ingrese su número de telefono"
+                    id="telefono"
+                    autocomplete="off"
+                    type="telefono"
+                
+               />
+
+               <p class="text-danger mb-2 d-none" id="alerttelefono"></p>
+
+             <input
+                    class="form-control mb-2"
+                    name="estado"
+                    placeholder="Ingrese su estado civil"
+                    id="estado"
+                    autocomplete="off"
+                    type="estado"
+                    
+                />
+
+                <p class="text-danger mb-2 d-none" id="alertestado"></p>
+
+                <input
+                    class="form-control mb-2"
+                    name="userName"
+                    placeholder="Ingrese su nombre"
+                    autocomplete="off"
+                    id="userName"
+                    type="text"
+                  
+                />
+
+                <p class="text-danger mb-2 d-none" id="alertName"></p>
+
+                <input
+                    class="form-control mb-2"
+                    name="userEmail"
+                    placeholder="Ingrese su correo"
+                    id="userEmail"
+                    autocomplete="off"
+                    type="email"
+                    value=""
+                />
+
+                <p class="text-danger mb-2 d-none" id="alertEmail"></p>
+
+                <div class="form-control mb-2">
+                    <input type="file" class="form-control mb-2" aria-label="file example" required>
+                    <div class="form-control mb-2">Cargue Curiculum Vitae</div>
+                </div>
+                
+
+                <button class="btn btn-primary" type="submit">Enviar</button>
+            </form>
+            <div
+                class="alert alert-success mt-2 d-none"
+                id="alertSuccess"
+            ></div>
+        </div>
+
+        <script src="app.js"></script>
+
+        
+    </body>
+</html>
